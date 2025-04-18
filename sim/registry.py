@@ -1,19 +1,16 @@
 from typing import Dict, Type, Tuple
 from pydantic import BaseModel
 
-from .schemas.posthog import (
-    UsageMetricsSchema,
-    FeatureUsageSchema,
-    UserActionSchema
-)
-from .schemas.linear import (
-    TicketSchema,
-    CommentSchema,
-    WorkflowStateSchema
+from .schemas.common import (
+    AnalyticsEvent,
+    MetricsEvent,
+    AlertEvent,
+    TransactionEvent,
+    UserEvent
 )
 
 class EventRegistry:
-    """Registry mapping event types to their schemas and generators."""
+    """Registry mapping event types to their schemas."""
     
     def __init__(self):
         self._schemas: Dict[Tuple[str, str], Type[BaseModel]] = {}
@@ -21,16 +18,22 @@ class EventRegistry:
     
     def _register_schemas(self):
         """Register all available event schemas."""
-        # PostHog events
-        self._schemas[("posthog", "usage.metrics")] = UsageMetricsSchema
-        self._schemas[("posthog", "feature.usage")] = FeatureUsageSchema
-        self._schemas[("posthog", "user.action")] = UserActionSchema
+        # Analytics events
+        self._schemas[("analytics", "page.view")] = AnalyticsEvent
+        self._schemas[("analytics", "search.performed")] = AnalyticsEvent
+        self._schemas[("analytics", "feature.usage")] = AnalyticsEvent
+        self._schemas[("analytics", "user.signup")] = UserEvent
         
-        # Linear events
-        self._schemas[("linear", "ticket.created")] = TicketSchema
-        self._schemas[("linear", "ticket.updated")] = TicketSchema
-        self._schemas[("linear", "comment.created")] = CommentSchema
-        self._schemas[("linear", "workflow.state_changed")] = WorkflowStateSchema
+        # Monitoring events
+        self._schemas[("monitoring", "system.metrics")] = MetricsEvent
+        self._schemas[("monitoring", "system.alert")] = AlertEvent
+        self._schemas[("monitoring", "error.occurred")] = AlertEvent
+        self._schemas[("monitoring", "db.connections")] = MetricsEvent
+        
+        # Business events
+        self._schemas[("payment", "transaction.created")] = TransactionEvent
+        self._schemas[("inventory", "stock.updated")] = MetricsEvent
+        self._schemas[("shipping", "shipment.created")] = TransactionEvent
     
     def get_schema(self, source: str, event: str) -> Type[BaseModel]:
         """Get the schema for a given event type."""

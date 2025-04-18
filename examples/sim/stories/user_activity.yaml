@@ -1,0 +1,33 @@
+org_id: example_company
+start_date: 2025-01-01
+
+events:
+  # User signup and initial activity
+  - source: analytics
+    event: user.signup
+    offset_days: 0
+    data:
+      user_id: "u_123"
+      email: "user@example.com"
+      signup_source: "organic"
+
+  # Feature usage tracking
+  - source: analytics
+    event: feature.usage
+    offset_days: 0
+    repeat: 5
+    data:
+      feature_id: random_text("feature")
+      user_id: "u_123"
+      usage_count: random(1, 10)
+      session_duration: random(60, 300)
+
+  # Error events
+  - source: monitoring
+    event: error.occurred
+    offset_days: 2
+    data:
+      error_type: "api_timeout"
+      severity: "warning"
+      service: "api_gateway"
+      duration_ms: random(5000, 15000) 

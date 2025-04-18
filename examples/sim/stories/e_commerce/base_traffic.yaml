@@ -1,0 +1,22 @@
+org_id: example_shop
+start_date: 2025-01-01
+
+events:
+  - source: analytics
+    event: page.view
+    offset_days: 0
+    repeat: 24
+    data:
+      page: random_text("page")
+      visitors: random(100, 500)
+      bounce_rate: random(0.1, 0.4)
+      avg_duration: random(30, 180)
+
+  - source: analytics
+    event: search.performed
+    offset_days: 0
+    repeat: 12
+    data:
+      query: random_text("product")
+      results_count: random(5, 50)
+      filtered: random(true, false) 

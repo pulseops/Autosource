@@ -1,0 +1,36 @@
+org_id: example_shop
+start_date: 2025-01-01
+includes:
+  - base_traffic.yaml
+
+events:
+  - source: payment
+    event: transaction.created
+    offset_days: 0
+    repeat: 8
+    data:
+      transaction_id: random_text("txn")
+      amount: random(1000, 50000)
+      currency: "USD"
+      status: "completed"
+      payment_method: "credit_card"
+
+  - source: inventory
+    event: stock.updated
+    offset_days: 0
+    repeat: 4
+    data:
+      product_id: random_text("prod")
+      quantity: random(-5, -1)
+      warehouse: "main"
+      reason: "sale"
+
+  - source: shipping
+    event: shipment.created
+    offset_days: 1
+    repeat: 8
+    data:
+      shipment_id: random_text("ship")
+      carrier: "fedex"
+      tracking_number: random_text("track")
+      status: "processing" 

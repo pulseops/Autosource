@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import json
+import sys
+from pathlib import Path
 from datetime import datetime
-from autosource.engine import stream_story
+from sim.engine import stream_story
 from rich.console import Console
 from rich.table import Table
 from rich import print as rprint
@@ -25,11 +27,11 @@ def create_event_table(event) -> Table:
     
     return table
 
-def main():
+def stream_story_events(story_path: str):
+    """Stream and display events from a story file."""
     console = Console()
-    story_path = "autosource/stories/onboarding_flow.yaml"
     
-    console.print("\n[bold green]🚀 Starting Event Stream[/bold green]\n")
+    console.print(f"\n[bold green]🚀 Streaming events from {story_path}[/bold green]\n")
     
     try:
         for i, event in enumerate(stream_story(story_path), 1):
@@ -50,6 +52,26 @@ def main():
     
     console.print("\n[bold green]✨ Stream completed successfully[/bold green]\n")
     return 0
+
+def list_available_stories():
+    """List all available example stories."""
+    console = Console()
+    stories_dir = Path(__file__).parent.parent / "stories"
+    
+    console.print("\n[bold]Available Example Stories:[/bold]")
+    for story_file in stories_dir.glob("**/*.yaml"):
+        relative_path = story_file.relative_to(stories_dir)
+        console.print(f"- {relative_path}")
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: stream_events.py <story_file>")
+        print("\nExample story files:")
+        list_available_stories()
+        return 1
+    
+    story_path = sys.argv[1]
+    return stream_story_events(story_path)
 
 if __name__ == "__main__":
     # Add rich as a requirement

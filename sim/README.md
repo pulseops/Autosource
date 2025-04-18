@@ -1,10 +1,10 @@
-# Autosource.sim - Event Simulation Engine for Pulse
+# Sim - Event Simulation Engine
 
-A0-L1 simulation layer for Pulse that generates synthetic but realistic operational events for testing and development.
+A simulation engine that generates synthetic but realistic operational events for testing and development.
 
 ## Overview
 
-Autosource.sim is a simulation-only implementation of the A0 layer that generates synthetic `Event` objects simulating real company activity across various operational tools (PostHog, Stripe, Linear, etc.).
+Sim is a simulation-only implementation that generates synthetic `Event` objects simulating real company activity across various operational tools (PostHog, Stripe, Linear, etc.).
 
 ## Features
 
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 ## Usage
 
 ```python
-from autosource.engine import stream_story
+from sim.engine import stream_story
 
 # Stream events from a story file
 for event in stream_story("stories/example.yaml"):
@@ -52,7 +52,7 @@ events:
 
 ## Project Structure
 
-- `autosource/`
+- `sim/`
   - `config.py`: Configuration models
   - `engine.py`: Main simulation engine
   - `rule_resolver.py`: Dynamic field resolution

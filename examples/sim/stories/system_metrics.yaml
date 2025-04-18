@@ -1,0 +1,38 @@
+org_id: example_company
+start_date: 2025-01-01
+
+events:
+  # CPU usage metrics
+  - source: monitoring
+    event: system.metrics
+    offset_days: 0
+    repeat: 24  # Every hour for a day
+    data:
+      metric: "cpu_usage"
+      value: random(10, 90)
+      host: "web-server-1"
+      environment: "production"
+
+  # Memory usage spikes
+  - source: monitoring
+    event: system.alert
+    offset_days: 0
+    repeat: 3
+    data:
+      alert_type: "memory_usage"
+      threshold: 90
+      current_value: random(91, 99)
+      host: "web-server-1"
+      severity: "high"
+
+  # Database connections
+  - source: monitoring
+    event: db.connections
+    offset_days: 0
+    repeat: 12  # Every 2 hours
+    data:
+      active_connections: random(50, 200)
+      max_connections: 500
+      database: "main"
+      read_iops: random(1000, 5000)
+      write_iops: random(100, 1000) 
