@@ -1,0 +1,57 @@
+org_id: doestack
+start_date: 2025-04-01
+
+events:
+  # Initial signup and usage metrics
+  - source: posthog
+    event: usage.metrics
+    offset_days: 0
+    repeat: 7
+    data:
+      percent_change: random(-10, 10)
+      active_users: random(80, 120)
+      total_events: random(1000, 2000)
+      retention_rate: random(0.6, 0.8)
+
+  # Feature usage tracking
+  - source: posthog
+    event: feature.usage
+    offset_days: 1
+    repeat: 5
+    data:
+      feature_id: "onboarding_wizard"
+      name: "Onboarding Wizard"
+      usage_count: random(10, 30)
+      unique_users: random(5, 15)
+
+  # Support tickets for onboarding
+  - source: linear
+    event: ticket.created
+    offset_days: 2
+    data:
+      title: random_text("onboarding")
+      description: "New user needs assistance with initial setup"
+      status: "todo"
+      priority: 2
+      tags: ["onboarding", "new-user"]
+
+  # Support team response
+  - source: linear
+    event: comment.created
+    offset_days: 2
+    data:
+      ticket_id: "TKT-123"
+      body: "I'll help you get set up. Let's start with the basics."
+      user_id: "support_agent_1"
+      mentions: ["customer_1"]
+
+  # Ticket status update
+  - source: linear
+    event: workflow.state_changed
+    offset_days: 3
+    data:
+      ticket_id: "TKT-123"
+      from_state: "todo"
+      to_state: "in_progress"
+      changed_by: "support_agent_1"
+      duration_in_state: 3600  # 1 hour 
