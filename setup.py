@@ -5,7 +5,12 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        # list your dependencies here
+        "pydantic>=2.5.0",
+        "PyYAML>=6.0.1",
+        "python-dateutil>=2.8.2",
+        "faker>=20.0.0",
+        "typing-extensions>=4.8.0",
+        "rich>=13.7.0",
     ],
     extras_require={
         "dev": [
